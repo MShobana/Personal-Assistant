@@ -3,9 +3,10 @@ package com.example.personalAssistant;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.widget.Toast;
+import android.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,15 +25,32 @@ public class SmsReceiver extends BroadcastReceiver {
             //---retrieve the SMS message received---
             Object[] pdus = (Object[]) bundle.get("pdus");
             msgs = new SmsMessage[pdus.length];
+            log("pdus length",String.valueOf(pdus.length));
             for (int i=0; i<msgs.length; i++){
-                msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-                str += "SMS from " + msgs[i].getOriginatingAddress();
-                str += " :";
-                str += msgs[i].getMessageBody().toString();
-                str += "\n";
+
+                SmsMessage wholeMessage = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                String msgpart = wholeMessage.getMessageBody().toString();
+
+                log("msg "+(i+1),msgpart);
+
+                String spamtext="good morning";
+
+                log("time",String.valueOf(wholeMessage.getTimestampMillis()));
+
+                if(msgpart.contains(spamtext))
+                {
+                    Uri smsUri= Uri.parse("content://sms");
+                    log("time",String.valueOf(wholeMessage.getTimestampMillis()));
+                    context.getContentResolver()
+                           .delete(smsUri, "address=? and date_sent=?"
+                                   , new String[]{wholeMessage.getDisplayOriginatingAddress(), String.valueOf(wholeMessage.getTimestampMillis())}) ;
+                }
             }
-            //---display the new SMS message---
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+
         }
+    }
+
+    private void log(String log,String msg) {
+        Log.wtf(log, msg);
     }
 }
