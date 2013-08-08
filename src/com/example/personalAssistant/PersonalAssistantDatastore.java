@@ -8,12 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import static com.example.personalAssistant.PersonalAssistantDB.*;
 
 public class PersonalAssistantDatastore {
-    public static final String DATABASE_NAME = "personal_assistant.db" ;
-    public static final int DB_VERSION = 1;
     private final SQLiteDatabase db;
 
     public PersonalAssistantDatastore(Context context) {
-        PersonalAssistantDB personalAssistantDB = new PersonalAssistantDB(context, DATABASE_NAME, null, DB_VERSION);
+        String database_name = context.getString(R.string.database_name);
+        int db_version= Integer.parseInt(context.getString(R.string.database_name));
+        PersonalAssistantDB personalAssistantDB = new PersonalAssistantDB(context, database_name, null, db_version);
+
         db = personalAssistantDB.getWritableDatabase();
     }
 
