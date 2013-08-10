@@ -21,6 +21,6 @@ public class PersonalAssistantDatastore {
     public void update(String spamText) {
         ContentValues contentValues=new ContentValues();
         contentValues.put(C_SPAM_TEXT,spamText);
-        db.update(T_SPAM_BLOCKER,contentValues,null,null);
+        db.insert(T_SPAM_BLOCKER,null,contentValues)   ;
     }
 }
