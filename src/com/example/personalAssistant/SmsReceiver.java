@@ -20,6 +20,8 @@ public class SmsReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         SmsMessage[] msgs = null;
         String str = "";
+        PersonalAssistantDatastore personalAssistantDatastore   = new PersonalAssistantDatastore(context)  ;
+
         if (bundle != null)
         {
             //---retrieve the SMS message received---
@@ -33,7 +35,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
                 log("msg "+(i+1),msgpart);
 
-                String spamtext="good morning";
+                String spamtext=personalAssistantDatastore.readSpamTextFromDb();
 
                 log("time",String.valueOf(wholeMessage.getTimestampMillis()));
 
