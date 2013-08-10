@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">personalAssistant</string>
-    <string name="database_name">personal_assistant.db</string>
-    <string name="db_version">1</string>
 </resources>
